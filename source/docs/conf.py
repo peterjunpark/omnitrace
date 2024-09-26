@@ -75,6 +75,13 @@ extensions = [
     "breathe",
 ]
 
+rst_prolog = """
+```{warning}
+This version of the documentation is archived and contains out-of-date information.
+See [Omnitrace documentation](https://rocm.docs.amd.com/projects/omnitrace/en/latest/index.html) for the latest version.
+```
+"""
+
 source_suffix = {
     ".rst": "restructuredtext",
     ".md": "markdown",

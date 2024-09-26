@@ -5,6 +5,7 @@ import sys
 import time
 import omnitrace
 from omnitrace.user import region as omni_user_region
+import random
 
 _prefix = ""
 
@@ -13,39 +14,23 @@ def fib(n):
     return n if n < 2 else (fib(n - 1) + fib(n - 2))
 
 
-try:
-    import numpy as np
+def _sum(arr):
+    print(f"----  in _sum")
+    return sum(arr)
 
-    def inefficient(n):
-        print(f"[{_prefix}] ... running inefficient({n})")
-        a = 0
-        for i in range(n):
-            a += i
-            for j in range(n):
-                a += j
-        _len = a * n * n
-        _ret = np.random.rand(_len).sum()
-        print(f"[{_prefix}] ... sum of {_len} random elements: {_ret}")
-        return _ret
 
-except ImportError:
-    import random
-
-    def _sum(arr):
-        return sum(arr)
-
-    def inefficient(n):
-        print(f"[{_prefix}] ... running inefficient({n})")
-        a = 0
-        for i in range(n):
-            a += i
-            for j in range(n):
-                a += j
-        _len = a * n * n
-        _arr = [random.random() for _ in range(_len)]
-        _ret = _sum(_arr)
-        print(f"[{_prefix}] ... sum of {_len} random elements: {_ret}")
-        return _ret
+def inefficient(n):
+    print(f"[{_prefix}] ... running inefficient({n})")
+    a = 0
+    for i in range(n):
+        a += i
+        for j in range(n):
+            a += j
+    _len = a * n * n
+    _arr = [random.random() for _ in range(_len)]
+    _ret = _sum(_arr)
+    print(f"[{_prefix}] ... sum of {_len} random elements: {_ret}")
+    return _ret
 
 
 @omnitrace.profile()

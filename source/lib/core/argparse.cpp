@@ -249,6 +249,15 @@ add_ld_preload(parser_data& _data)
 }
 
 parser_data&
+add_ld_library_path(parser_data& _data)
+{
+    auto _libdir = filepath::dirname(_data.dl_libpath);
+    if(filepath::exists(_libdir))
+        update_env(_data, "LD_LIBRARY_PATH", _libdir, UPD_APPEND);
+    return _data;
+}
+
+parser_data&
 add_core_arguments(parser_t& _parser, parser_data& _data)
 {
     const auto* _cputime_desc =
@@ -870,7 +879,7 @@ add_core_arguments(parser_t& _parser, parser_data& _data)
             .min_count(1)
             .max_count(3)
             .dtype("string")
-            .requires({ "profile|flat-profile" })
+            .required({ "profile|flat-profile" })
             .choices({ "text", "json", "console" })
             .action([&](parser_t& p) {
                 auto _v = p.get<strset_t>("profile-format");
@@ -976,7 +985,7 @@ add_core_arguments(parser_t& _parser, parser_data& _data)
                 { "--cpus" },
                 "CPU IDs for frequency sampling. Supports integers and/or ranges")
             .dtype("int and/or range")
-            .requires({ "host" })
+            .required({ "host" })
             .action([&](parser_t& p) {
                 update_env(_data, "OMNITRACE_SAMPLING_CPUS",
                            join(array_config_t{ "," }, p.get<strvec_t>("cpus")));
@@ -992,7 +1001,7 @@ add_core_arguments(parser_t& _parser, parser_data& _data)
             .add_argument({ "--gpus" },
                           "GPU IDs for SMI queries. Supports integers and/or ranges")
             .dtype("int and/or range")
-            .requires({ "device" })
+            .required({ "device" })
             .action([&](parser_t& p) {
                 update_env(_data, "OMNITRACE_SAMPLING_GPUS",
                            join(array_config_t{ "," }, p.get<strvec_t>("gpus")));
@@ -1117,7 +1126,7 @@ add_core_arguments(parser_t& _parser, parser_data& _data)
         _parser.add_argument({ "--sample-realtime" }, _realtime_desc)
             .min_count(0)
             .dtype("[freq] [delay] [tids...]")
-            .requires(std::move(_realtime_reqs))
+            .required(std::move(_realtime_reqs))
             .action([&](parser_t& p) {
                 auto _v = p.get<std::deque<std::string>>("sample-realtime");
                 update_env(_data, "OMNITRACE_SAMPLING_REALTIME", true);

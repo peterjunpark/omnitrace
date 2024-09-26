@@ -1,6 +1,5 @@
 # Omnitrace: Application Profiling, Tracing, and Analysis
 
-[![Ubuntu 18.04 with GCC and MPICH](https://github.com/ROCm/omnitrace/actions/workflows/ubuntu-bionic.yml/badge.svg)](https://github.com/ROCm/omnitrace/actions/workflows/ubuntu-bionic.yml)
 [![Ubuntu 20.04 with GCC, ROCm, and MPI](https://github.com/ROCm/omnitrace/actions/workflows/ubuntu-focal.yml/badge.svg)](https://github.com/ROCm/omnitrace/actions/workflows/ubuntu-focal.yml)
 [![Ubuntu 22.04 (GCC, Python, ROCm)](https://github.com/ROCm/omnitrace/actions/workflows/ubuntu-jammy.yml/badge.svg)](https://github.com/ROCm/omnitrace/actions/workflows/ubuntu-jammy.yml)
 [![OpenSUSE 15.x with GCC](https://github.com/ROCm/omnitrace/actions/workflows/opensuse.yml/badge.svg)](https://github.com/ROCm/omnitrace/actions/workflows/opensuse.yml)
@@ -8,12 +7,14 @@
 [![Installer Packaging (CPack)](https://github.com/ROCm/omnitrace/actions/workflows/cpack.yml/badge.svg)](https://github.com/ROCm/omnitrace/actions/workflows/cpack.yml)
 [![Documentation](https://github.com/ROCm/omnitrace/actions/workflows/docs.yml/badge.svg)](https://github.com/ROCm/omnitrace/actions/workflows/docs.yml)
 
-> ***[Omnitrace](https://github.com/ROCm/omnitrace) is an AMD open source research project and is not supported as part of the ROCm software stack.***
+> [!NOTE]
+> Perfetto validation is done with trace_processor v46.0, as there is a known issue with v47.0.
+If you are experiencing problems viewing your trace in the latest version of [Perfetto](http://ui.perfetto.dev), then try using [Perfetto UI v46.0](https://ui.perfetto.dev/v46.0-35b3d9845/#!/).
 
 ## Overview
 
 AMD Research is seeking to improve observability and performance analysis for software running on AMD heterogeneous systems.
-If you are familiar with [rocprof](https://rocmdocs.amd.com/en/latest/ROCm_Tools/ROCm-Tools.html) and/or [uProf](https://developer.amd.com/amd-uprof/),
+If you are familiar with [rocprof](https://rocm.docs.amd.com/projects/rocprofiler/en/latest/how-to/using-rocprof.html) and/or [uProf](https://developer.amd.com/amd-uprof/),
 you will find many of the capabilities of these tools available via Omnitrace in addition to many new capabilities.
 
 Omnitrace is a comprehensive profiling and tracing tool for parallel applications written in C, C++, Fortran, HIP, OpenCL, and Python which execute on the CPU or CPU+GPU.
@@ -21,6 +22,11 @@ It is capable of gathering the performance information of functions through any 
 Omnitrace supports interactive visualization of comprehensive traces in the web browser in addition to high-level summary profiles with mean/min/max/stddev statistics.
 In addition to runtimes, omnitrace supports the collection of system-level metrics such as the CPU frequency, GPU temperature, and GPU utilization, process-level metrics
 such as the memory usage, page-faults, and context-switches, and thread-level metrics such as memory usage, CPU time, and numerous hardware counters.
+
+> [!NOTE]
+> Full documentation is available at [Omnitrace documentation](https://rocm.docs.amd.com/projects/omnitrace/en/latest/index.html) in an organized, easy-to-read, searchable format.
+The documentation source files reside in the [`/docs`](/docs) folder of this repository. For information on contributing to the documentation, see
+[Contribute to ROCm documentation](https://rocm.docs.amd.com/en/latest/contribute/contributing.html)
 
 ### Data Collection Modes
 
@@ -85,11 +91,6 @@ such as the memory usage, page-faults, and context-switches, and thread-level me
 - I/O metrics
 - ... many more
 
-## Documentation
-
-The full documentation for [omnitrace](https://github.com/ROCm/omnitrace) is available at [rocm.github.io/omnitrace](https://rocm.github.io/omnitrace/).
-See the [Getting Started documentation](https://rocm.github.io/omnitrace/getting_started) for general tips and a detailed discussion about sampling vs. binary instrumentation.
-
 ## Quick Start
 
 ### Installation
@@ -109,7 +110,7 @@ wget https://github.com/ROCm/omnitrace/releases/latest/download/omnitrace-instal
 python3 ./omnitrace-install.py --prefix /opt/omnitrace/rocm-5.4 --rocm 5.4
 ```
 
-See the [Installation Documentation](https://rocm.github.io/omnitrace/installation) for detailed information.
+See the [Omnitrace installation guide](https://rocm.docs.amd.com/projects/omnitrace/en/latest/install/install.html) for detailed information.
 
 ### Setup
 
@@ -298,13 +299,13 @@ for `foo` via the direct call within `spam`. There will be no entries for `bar` 
 - Select "Open trace file" from panel on the left
 - Locate the omnitrace perfetto output (extension: `.proto`)
 
-![omnitrace-perfetto](source/docs/images/omnitrace-perfetto.png)
+![omnitrace-perfetto](docs/data/omnitrace-perfetto.png)
 
-![omnitrace-rocm](source/docs/images/omnitrace-rocm.png)
+![omnitrace-rocm](docs/data/omnitrace-rocm.png)
 
-![omnitrace-rocm-flow](source/docs/images/omnitrace-rocm-flow.png)
+![omnitrace-rocm-flow](docs/data/omnitrace-rocm-flow.png)
 
-![omnitrace-user-api](source/docs/images/omnitrace-user-api.png)
+![omnitrace-user-api](docs/data/omnitrace-user-api.png)
 
 ## Using Perfetto tracing with System Backend
 

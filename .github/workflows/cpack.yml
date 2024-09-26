@@ -4,14 +4,16 @@ run-name: cpack
 on:
   workflow_dispatch:
   push:
-    branches: [main, releases/**]
+    branches: [main, amd-mainline, release/**]
     tags:
-      - v*
+      - "v[1-9].[0-9]+.[0-9]+*"
+      - "rocm-[1-9].[0-9]+.[0-9]+*"
     paths-ignore:
       - '*.md'
+      - 'docs/**'
       - 'source/docs/**'
   pull_request:
-    branches: [main]
+    branches: [main, amd-mainline]
     paths:
       - '.github/workflows/cpack.yml'
       - 'docker/**'
@@ -31,10 +33,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # ubuntu 18.04
-          - os-distro: "ubuntu"
-            os-version: "18.04"
-            rocm-version: "0.0"
           # ubuntu 20.04
           - os-distro: "ubuntu"
             os-version: "20.04"
@@ -54,6 +52,12 @@ jobs:
           - os-distro: "ubuntu"
             os-version: "20.04"
             rocm-version: "6.0"
+          - os-distro: "ubuntu"
+            os-version: "20.04"
+            rocm-version: "6.1"
+          - os-distro: "ubuntu"
+            os-version: "20.04"
+            rocm-version: "6.2"
           # ubuntu 22.04
           - os-distro: "ubuntu"
             os-version: "22.04"
@@ -73,6 +77,12 @@ jobs:
           - os-distro: "ubuntu"
             os-version: "22.04"
             rocm-version: "6.0"
+          - os-distro: "ubuntu"
+            os-version: "22.04"
+            rocm-version: "6.1"
+          - os-distro: "ubuntu"
+            os-version: "22.04"
+            rocm-version: "6.2"
           # opensuse 15.3
           - os-distro: "opensuse"
             os-version: "15.3"
@@ -114,13 +124,28 @@ jobs:
           - os-distro: "opensuse"
             os-version: "15.4"
             rocm-version: "6.0"
+          - os-distro: "opensuse"
+            os-version: "15.4"
+            rocm-version: "6.1"
           # opensuse 15.5
           - os-distro: "opensuse"
             os-version: "15.5"
             rocm-version: "0.0"
           - os-distro: "opensuse"
             os-version: "15.5"
+            rocm-version: "5.6"
+          - os-distro: "opensuse"
+            os-version: "15.5"
+            rocm-version: "5.7"
+          - os-distro: "opensuse"
+            os-version: "15.5"
             rocm-version: "6.0"
+          - os-distro: "opensuse"
+            os-version: "15.5"
+            rocm-version: "6.1"
+          - os-distro: "opensuse"
+            os-version: "15.5"
+            rocm-version: "6.2"
           # RHEL 8.7
           - os-distro: "rhel"
             os-version: "8.7"
@@ -153,6 +178,9 @@ jobs:
           - os-distro: "rhel"
             os-version: "8.8"
             rocm-version: "6.0"
+          - os-distro: "rhel"
+            os-version: "8.8"
+            rocm-version: "6.1"
           # RHEL 8.9
           - os-distro: "rhel"
             os-version: "8.9"
@@ -160,6 +188,12 @@ jobs:
           - os-distro: "rhel"
             os-version: "8.9"
             rocm-version: "6.0"
+          - os-distro: "rhel"
+            os-version: "8.9"
+            rocm-version: "6.1"
+          - os-distro: "rhel"
+            os-version: "8.9"
+            rocm-version: "6.2"
           # RHEL 9.1
           - os-distro: "rhel"
             os-version: "9.1"
@@ -183,6 +217,9 @@ jobs:
           - os-distro: "rhel"
             os-version: "9.2"
             rocm-version: "6.0"
+          - os-distro: "rhel"
+            os-version: "9.2"
+            rocm-version: "6.1"
           # RHEL 9.3
           - os-distro: "rhel"
             os-version: "9.3"
@@ -190,6 +227,12 @@ jobs:
           - os-distro: "rhel"
             os-version: "9.3"
             rocm-version: "6.0"
+          - os-distro: "rhel"
+            os-version: "9.3"
+            rocm-version: "6.1"
+          - os-distro: "rhel"
+            os-version: "9.3"
+            rocm-version: "6.2"
 
     steps:
       - name: Free Disk Space
@@ -266,7 +309,7 @@ jobs:
           done
 
       - name: Upload STGZ Release Assets
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/') && github.repository == 'ROCm/omnitrace'
         with:
           fail_on_unmatched_files: True
